@@ -8,7 +8,15 @@ void session_init() {
 	} else {
         String ua = server.hasHeader("User-Agent") ? server.header("User-Agent") : "noagent";
         time_t t=time(NULL);
-        String hashIn = String(t) + ua;
-		server.sendHeader("Set-Cookie", "test=cookie");
+        String ts = String(t);
+
+        MD5Builder md5;
+        md5.begin();
+        md5.add(ts);
+        md5.add(ua);
+        md5.calculate();
+
+        DBG_OUTPUT_PORT.println(md5.toString());
+		server.sendHeader("Set-Cookie", "sessID=" + md5.toString());
 	}
 }
