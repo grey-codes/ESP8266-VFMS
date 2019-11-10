@@ -92,6 +92,7 @@ String getContentType(String filename) {
 }
 
 bool handleFileRead(String path) {
+  session_init();
   DBG_OUTPUT_PORT.println("handleFileRead: " + path);
   if (path.endsWith("/")) {
     path += "index.htm";
@@ -283,6 +284,12 @@ void setup(void) {
     server.send(200, "text/json", json);
     json = String();
   });
+
+  //here the list of headers to be recorded
+  const char * headers[] = {"User-Agent","Cookie"} ;
+  size_t headersize = sizeof(headers)/sizeof(char*);
+  server.collectHeaders(headers, headersize );
+
   server.begin();
   DBG_OUTPUT_PORT.println("HTTP server started");
 
