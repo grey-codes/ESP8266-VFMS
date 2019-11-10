@@ -1,3 +1,7 @@
+#Arduino
+c_cpp_properties.json
+arduino.json
+
 # Prerequisites
 *.d
 
