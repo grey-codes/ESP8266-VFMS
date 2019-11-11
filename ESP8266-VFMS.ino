@@ -80,6 +80,16 @@ void setup(void) {
 	DBG_OUTPUT_PORT.print("Open http://");
 	DBG_OUTPUT_PORT.print(host);
 	DBG_OUTPUT_PORT.println(".local/edit to see the file browser");
+
+	server.on("/login",[]() {
+		svLogIn();
+	});
+	server.on("/logout",[]() {
+		svLogOut();
+	});
+	server.on("/register",[]() {
+		svRegister();
+	});
 	
 	server.onNotFound([]() {
 		if (!handleFileRead(server.uri())) {

@@ -55,3 +55,4 @@ Module.symvers
 Mkfile.old
 dkms.conf
 sessions.ino
+.vscode/settings.json
