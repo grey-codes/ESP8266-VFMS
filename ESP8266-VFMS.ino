@@ -107,6 +107,14 @@ void setup(void) {
 	server.on("/",[]() {
 		handleIndex();
 	});
+	server.on("/index.htm",[]() {
+		server.sendHeader("Location", "/",true); //redirect to home
+		server.send(301, "text/plain",""); 
+	});
+	server.on("/prompt.htm",[]() {
+		server.sendHeader("Location", "/",true); //redirect to home
+		server.send(301, "text/plain",""); 
+	});
 	
 	server.onNotFound([]() {
 		if (!handleFileRead(server.uri())) {
