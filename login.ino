@@ -124,6 +124,7 @@ void svRegister() {
 
     username.toLowerCase();
     username.trim();
+    username.replace("\n",""); //don't f*ck my database :(
 
     if (!infoRequirements(username,password)) {
         server.send(406, "text/plain", "Error 406 - Information not acceptable");         // return invalid request
