@@ -52,73 +52,94 @@ struct logininfo findLoginByName(String target) {
     strcpy(l.username,"");
     strcpy(l.password,"");
     l.userID = -1;
-    String un, pw, uid_str, group_str;
+
     unsigned int uid;
     char group;
+    char un[sizeof(l.username)];
+    char pw[sizeof(l.password)];
+    unsigned char un_ar[sizeof(l.username)];
+    unsigned char pw_ar[sizeof(l.password)];
+    unsigned char uid_ar[sizeof(uid)];
+    unsigned char group_ar[sizeof(group)];
+
+    const char *un_target = target.c_str();
+
     File logins = filesystem->open(LOGIN_FILENAME,"r+");
     logins.setTimeout(10);
     do {
-        un = logins.readStringUntil('\n');
-        pw = logins.readStringUntil('\n');
-        uid_str = logins.readStringUntil('\n');
-        group_str = logins.readStringUntil('\n');
-        un.trim();
-        pw.trim();
-        uid_str.trim();
-        uid = uid_str.toInt();
-        group = (char)group_str.toInt();
-	    //DBG_OUTPUT_PORT.println("Read info for " + un);
-        un.toLowerCase();
-        un.trim();
-        if (un.equals(target)) {
-            strcpy(l.username,un.c_str());
-            strcpy(l.password,pw.c_str());
+        logins.read(un_ar,sizeof(un_ar));
+        logins.read(pw_ar,sizeof(pw_ar));
+        logins.read(uid_ar,sizeof(uid_ar));
+        logins.read(group_ar,sizeof(group_ar));
+        memcpy(un,un_ar,sizeof(un));
+        memcpy(pw,pw_ar,sizeof(pw));
+        memcpy(&uid,uid_ar,sizeof(uid));
+        memcpy(&group,group_ar,sizeof(group));
+        
+        if (strcmp(un,un_target)==0) {
+            memcpy(l.username,un,sizeof(l.username));
+            memcpy(l.password,pw,sizeof(l.password));
             l.userID = uid;
             l.group = group;
-	        DBG_OUTPUT_PORT.println("Found info for " + String(uid,10) + ":" + un );
+	        DBG_OUTPUT_PORT.println("Found info for " + String(uid,10) + ":" + String(un) );
             return l;
         }
-    } while (un.length()!=0);
+    } while (logins.peek()!='\0');
     logins.close();
 }
 
 unsigned int nextUserID() {
-    String un, dummy;
-    unsigned int uid;
-    unsigned int ret = -1;
+    LoginInfo l;
+    unsigned int ret;
+    char group;
+    unsigned char un_ar[sizeof(l.username)];
+    unsigned char pw_ar[sizeof(l.password)];
+    unsigned char uid_ar[sizeof(ret)];
+    unsigned char group_ar[sizeof(group)];
     File logins = filesystem->open(LOGIN_FILENAME,"r+");
     logins.setTimeout(10);
     do {
-        un = logins.readStringUntil('\n'); //username
-        dummy = logins.readStringUntil('\n'); //pw hash
-        dummy = logins.readStringUntil('\n'); //user id
-        dummy.trim();
-        uid = dummy.toInt();
-        dummy = logins.readStringUntil('\n'); //group binary
-	    //DBG_OUTPUT_PORT.println("Read info for " + un + "," + pw + "," + String(uid,10) );
-        if (un.length()!=0) {
-            ret = uid;
-        }
-    } while (un.length()!=0);
+        logins.read(un_ar,sizeof(un_ar));
+        logins.read(pw_ar,sizeof(pw_ar));
+        logins.read(uid_ar,sizeof(uid_ar));
+        logins.read(group_ar,sizeof(group_ar));
+        memcpy(&ret,uid_ar,sizeof(ret));
+    } while (logins.peek()!='\0');
     logins.close();
     ret++;
     return ret;
 }
 
 void appendNewUser(String username, String password) {
-    unsigned int id = nextUserID();
+    unsigned int uid = nextUserID();
+    char group = 0;
     File logins = filesystem->open(LOGIN_FILENAME,"a+");
     logins.setTimeout(10);
-    logins.println(username);
     MD5Builder md5;
     md5.begin();
     md5.add(password);
     md5.calculate();
     String md5s = md5.toString();
+    /*
+    logins.println(username);
     logins.println(md5s);
-    logins.println(String(id,10));
+    logins.println(String(uid,10));
+    */
+    LoginInfo l;
+    unsigned char un_ar[sizeof(l.username)];
+    unsigned char pw_ar[sizeof(l.password)];
+    unsigned char uid_ar[sizeof(uid)];
+    unsigned char group_ar[sizeof(group)];
+    memcpy(un_ar,username.c_str(),sizeof(un_ar));
+    memcpy(pw_ar,password.c_str(),sizeof(pw_ar));
+    memcpy(uid_ar,&uid,sizeof(uid));
+    memcpy(group_ar,&group,sizeof(group));
+    logins.write(un_ar,sizeof(un_ar));
+    logins.write(pw_ar,sizeof(pw_ar));
+    logins.write(uid_ar,sizeof(uid));
+    logins.write(group_ar,sizeof(group));
     logins.close();
-	DBG_OUTPUT_PORT.println("Wrote new user: " + username + "\n" + md5s + "\n" + String(id,10));
+	DBG_OUTPUT_PORT.println("Wrote new user: " + username + "\n" + md5s + "\n" + String(uid,10));
 }
 
 void svLogIn() {
