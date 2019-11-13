@@ -137,6 +137,8 @@ void svLogIn() {
         return;
     }
 
+    map_sessmap(sessID.c_str(),l.userID);
+
     server.send(200, "text/plain", "Successful log in by " + sessID);
 }
 
@@ -144,7 +146,17 @@ void svLogOut() {
     if (!validReq())
         return;
     String sessID = session_init();
-	DBG_OUTPUT_PORT.println("Simulate log out by " + sessID);
+	DBG_OUTPUT_PORT.println("Initialize log out by " + sessID);
+
+    size_t sessionID = find_sessmap(sessID.c_str());
+    if (sessionID==-1) {
+        server.send(403, "text/plain", "Error 403 - Not logged in");         // return invalid request
+        return;
+    }
+
+    
+    map_sessmap(sessID.c_str(),-1);
+
     server.send(200, "text/plain", "Simulate log out by " + sessID);
 }
 

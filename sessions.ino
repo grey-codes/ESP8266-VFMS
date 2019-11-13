@@ -3,7 +3,7 @@
 #define SESS_EXP 5*60 //sessmaps may be cannibalised after 5 minutes
 
 struct sessmap {
-	char hash[HASH_LEN];
+	char hash[HASH_LEN+1]; // do not forget terminator !!!
 	unsigned int userID;
 	time_t lastUsed;
 };
@@ -20,9 +20,10 @@ void init_sessmaps() {
 	}
 }
 
-size_t find_sessmap(char *hash) {
+size_t find_sessmap(const char *hash) {
 	for (int i=0; i<MAX_SESS; i++) {
-		if (strcmp(sessmaps[i].hash,hash) == 0) {
+		if (strcmp(sessmaps[i].hash,hash) == 0 && sessmaps[i].userID!=-1) {
+			sessmaps[i].lastUsed = time(NULL);
 			return i;
 		}
 	}
@@ -33,6 +34,7 @@ size_t find_sessmap(char *hash) {
 size_t find_sessmap_uid(int userID) {
 	for (int i=0; i<MAX_SESS; i++) {
 		if ( sessmaps[i].userID == userID ){
+			sessmaps[i].lastUsed = time(NULL);
 			return i;
 		}
 	}
@@ -53,7 +55,7 @@ size_t find_empty_sessmap() {
 	return -1;
 }
 
-int map_sessmap(char *sessID, int userID) {
+int map_sessmap(const char *sessID, int userID) {
 	//first, attempt to replace existing sessmap
 	size_t i = find_sessmap(sessID);
 	if (i!=-1) {
