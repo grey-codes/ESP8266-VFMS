@@ -1,7 +1,3 @@
-#include <time.h>
-#include <stdio.h>
-#include <string.h>
-
 #define HASH_LEN 32
 #define MAX_SESS 8 //8 max sessmaps
 #define SESS_EXP 5*60 //sessmaps may be cannibalised after 5 minutes
