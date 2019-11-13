@@ -158,7 +158,8 @@ void svLogIn() {
     map_sessmap(sessID.c_str(),l);
 
     server.sendHeader("Set-Cookie", "userID=" + String(l.userID,10));
-    server.send(200, "text/plain", "Successful log in by " + sessID);
+    handleFileRead("/succ.htm");
+    //server.send(200, "text/plain", "Successful log in by " + sessID);
 }
 
 void svLogOut() {
@@ -176,7 +177,8 @@ void svLogOut() {
     map_sessmap(sessID.c_str(),dummy);
 
     server.sendHeader("Set-Cookie", "userID=-1");
-    server.send(200, "text/plain", "Simulate log out by " + sessID);
+    handleFileRead("/succ.htm");
+    //server.send(200, "text/plain", "Simulate log out by " + sessID);
 }
 
 void svRegister() {
@@ -202,8 +204,9 @@ void svRegister() {
         server.send(406, "text/plain", "Error 406 - User already exists");         // return invalid request
         return;
     }
-
-    server.send(200, "text/plain", "Simulate register by " + sessID);
-
+\
     appendNewUser(username,password);
+    handleFileRead("/succ.htm");
+    //server.send(200, "text/plain", "Simulate register by " + sessID);
+
 }
