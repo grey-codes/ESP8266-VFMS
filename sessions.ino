@@ -106,7 +106,7 @@ String session_init() {
     md5.calculate();
     String md5s = md5.toString();
 
-    DBG_OUTPUT_PORT.println("Initializing sessmap: " + md5s);
+    //DBG_OUTPUT_PORT.println("Initializing session: " + md5s);
 server.sendHeader("Set-Cookie", "sessID=" + md5s);
 
     return md5s;

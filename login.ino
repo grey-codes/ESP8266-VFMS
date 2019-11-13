@@ -46,11 +46,14 @@ struct logininfo findLoginByName(String target) {
         pw = logins.readStringUntil('\n');
         inds = logins.readStringUntil('\n');
         ind = inds.toInt();
-	    DBG_OUTPUT_PORT.println("Read info for " + un);
+	    //DBG_OUTPUT_PORT.println("Read info for " + un);
+        un.toLowerCase();
+        un.trim();
         if (un.equals(target)) {
             strcpy(l.username,un.c_str());
             strcpy(l.password,pw.c_str());
             l.userID = ind;
+	        DBG_OUTPUT_PORT.println("Found info for " + String(ind,10) + ":" + un );
             return l;
         }
     } while (un.length()!=0);
@@ -68,7 +71,7 @@ unsigned int nextUserID() {
         pw = logins.readStringUntil('\n');
         inds = logins.readStringUntil('\n');
         ind = inds.toInt();
-	    DBG_OUTPUT_PORT.println("Read info for " + un + "," + pw + "," + String(ind,10) );
+	    //DBG_OUTPUT_PORT.println("Read info for " + un + "," + pw + "," + String(ind,10) );
         if (un.length()!=0) {
             ret = ind;
         }
@@ -114,13 +117,13 @@ void svRegister() {
     if (!validReq())
         return;
     String sessID = session_init();
-	DBG_OUTPUT_PORT.println("Simulate register by " + sessID);
+	DBG_OUTPUT_PORT.println("Initializing register by " + sessID);
 
     String username = server.arg("username");
     String password = server.arg("password");
 
-     username.toLowerCase();
-     username.trim();
+    username.toLowerCase();
+    username.trim();
 
     if (!infoRequirements(username,password)) {
         server.send(406, "text/plain", "Error 406 - Information not acceptable");         // return invalid request
