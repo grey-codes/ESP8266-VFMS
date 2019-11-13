@@ -35,7 +35,7 @@ int infoRequirements(String un, String pw) {
     return 1;
 }
 
-struct logininfo fuidLoginByName(String target) {
+struct logininfo findLoginByName(String target) {
     LoginInfo l;
     strcpy(l.username,"");
     strcpy(l.password,"");
@@ -123,7 +123,7 @@ void svLogIn() {
     username.trim();
     username.replace("\n",""); //don't f*ck my database :(
     
-    LoginInfo l = fuidLoginByName(username);
+    LoginInfo l = findLoginByName(username);
     if (l.userID==-1) {
         server.send(403, "text/plain", "Error 403 - Invalid username or password");         // return invalid request
         return;
@@ -155,7 +155,7 @@ void svLogOut() {
     String sessID = session_init();
 	DBG_OUTPUT_PORT.println("Initialize log out by " + sessID);
 
-    size_t sessionID = fuid_sessmap(sessID.c_str());
+    size_t sessionID = find_sessmap(sessID.c_str());
     if (sessionID==-1) {
         server.send(403, "text/plain", "Error 403 - Not logged in");         // return invalid request
         return;
@@ -186,7 +186,7 @@ void svRegister() {
         return;
     }
 
-    LoginInfo l = fuidLoginByName(username);
+    LoginInfo l = findLoginByName(username);
     if (l.userID!=-1) {
         server.send(406, "text/plain", "Error 406 - User already exists");         // return invalid request
         return;
