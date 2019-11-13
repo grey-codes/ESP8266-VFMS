@@ -13,6 +13,7 @@ struct logininfo {
     char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
 	char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
     unsigned int userID;
+    char group;
 };
 
 typedef struct logininfo LoginInfo;
@@ -34,31 +35,35 @@ int infoRequirements(String un, String pw) {
     return 1;
 }
 
-struct logininfo findLoginByName(String target) {
+struct logininfo fuidLoginByName(String target) {
     LoginInfo l;
     strcpy(l.username,"");
     strcpy(l.password,"");
     l.userID = -1;
-    String un, pw, inds;
-    unsigned int ind;
+    String un, pw, uid_str, group_str;
+    unsigned int uid;
+    char group;
     File logins = filesystem->open(LOGIN_FILENAME,"r+");
     logins.setTimeout(10);
     do {
         un = logins.readStringUntil('\n');
         pw = logins.readStringUntil('\n');
-        inds = logins.readStringUntil('\n');
+        uid_str = logins.readStringUntil('\n');
+        group_str = logins.readStringUntil('\n');
         un.trim();
         pw.trim();
-        inds.trim();
-        ind = inds.toInt();
+        uid_str.trim();
+        uid = uid_str.toInt();
+        group = (char)group_str.toInt();
 	    //DBG_OUTPUT_PORT.println("Read info for " + un);
         un.toLowerCase();
         un.trim();
         if (un.equals(target)) {
             strcpy(l.username,un.c_str());
             strcpy(l.password,pw.c_str());
-            l.userID = ind;
-	        DBG_OUTPUT_PORT.println("Found info for " + String(ind,10) + ":" + un );
+            l.userID = uid;
+            l.group = group;
+	        DBG_OUTPUT_PORT.println("Found info for " + String(uid,10) + ":" + un );
             return l;
         }
     } while (un.length()!=0);
@@ -66,22 +71,21 @@ struct logininfo findLoginByName(String target) {
 }
 
 unsigned int nextUserID() {
-    String un, pw, inds;
-    unsigned int ind;
+    String un, dummy;
+    unsigned int uid;
     unsigned int ret = -1;
     File logins = filesystem->open(LOGIN_FILENAME,"r+");
     logins.setTimeout(10);
     do {
-        un = logins.readStringUntil('\n');
-        pw = logins.readStringUntil('\n');
-        inds = logins.readStringUntil('\n');
-        un.trim();
-        pw.trim();
-        inds.trim();
-        ind = inds.toInt();
-	    //DBG_OUTPUT_PORT.println("Read info for " + un + "," + pw + "," + String(ind,10) );
+        un = logins.readStringUntil('\n'); //username
+        dummy = logins.readStringUntil('\n'); //pw hash
+        dummy = logins.readStringUntil('\n'); //user id
+        dummy.trim();
+        uid = dummy.toInt();
+        dummy = logins.readStringUntil('\n'); //group binary
+	    //DBG_OUTPUT_PORT.println("Read info for " + un + "," + pw + "," + String(uid,10) );
         if (un.length()!=0) {
-            ret = ind;
+            ret = uid;
         }
     } while (un.length()!=0);
     logins.close();
@@ -119,7 +123,7 @@ void svLogIn() {
     username.trim();
     username.replace("\n",""); //don't f*ck my database :(
     
-    LoginInfo l = findLoginByName(username);
+    LoginInfo l = fuidLoginByName(username);
     if (l.userID==-1) {
         server.send(403, "text/plain", "Error 403 - Invalid username or password");         // return invalid request
         return;
@@ -151,7 +155,7 @@ void svLogOut() {
     String sessID = session_init();
 	DBG_OUTPUT_PORT.println("Initialize log out by " + sessID);
 
-    size_t sessionID = find_sessmap(sessID.c_str());
+    size_t sessionID = fuid_sessmap(sessID.c_str());
     if (sessionID==-1) {
         server.send(403, "text/plain", "Error 403 - Not logged in");         // return invalid request
         return;
@@ -182,7 +186,7 @@ void svRegister() {
         return;
     }
 
-    LoginInfo l = findLoginByName(username);
+    LoginInfo l = fuidLoginByName(username);
     if (l.userID!=-1) {
         server.send(406, "text/plain", "Error 406 - User already exists");         // return invalid request
         return;
