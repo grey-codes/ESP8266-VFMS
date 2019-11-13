@@ -8,8 +8,8 @@
 #define LOGIN_FILENAME "/logins.dat"
 
 struct logininfo {
-    char username[USERNAME_MAX_LEN];
-	char password[PASSWORD_HASH_LEN];
+    char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
+	char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
     unsigned int userID;
 };
 
@@ -45,6 +45,9 @@ struct logininfo findLoginByName(String target) {
         un = logins.readStringUntil('\n');
         pw = logins.readStringUntil('\n');
         inds = logins.readStringUntil('\n');
+        un.trim();
+        pw.trim();
+        inds.trim();
         ind = inds.toInt();
 	    //DBG_OUTPUT_PORT.println("Read info for " + un);
         un.toLowerCase();
@@ -70,6 +73,9 @@ unsigned int nextUserID() {
         un = logins.readStringUntil('\n');
         pw = logins.readStringUntil('\n');
         inds = logins.readStringUntil('\n');
+        un.trim();
+        pw.trim();
+        inds.trim();
         ind = inds.toInt();
 	    //DBG_OUTPUT_PORT.println("Read info for " + un + "," + pw + "," + String(ind,10) );
         if (un.length()!=0) {
@@ -100,9 +106,38 @@ void appendNewUser(String username, String password) {
 void svLogIn() {
     if (!validReq())
         return;
+    char hash[PASSWORD_HASH_LEN];
     String sessID = session_init();
-	DBG_OUTPUT_PORT.println("Simulate log in by " + sessID);
-    server.send(200, "text/plain", "Simulate log in by " + sessID);
+	DBG_OUTPUT_PORT.println("Initializing login by " + sessID);
+
+    String username = server.arg("username");
+    String password = server.arg("password");
+
+    username.toLowerCase();
+    username.trim();
+    username.replace("\n",""); //don't f*ck my database :(
+    
+    LoginInfo l = findLoginByName(username);
+    if (l.userID==-1) {
+        server.send(403, "text/plain", "Error 403 - Invalid username or password");         // return invalid request
+        return;
+    }
+
+    MD5Builder md5;
+    md5.begin();
+    md5.add(password);
+    md5.calculate();
+    String md5s = md5.toString();
+    strcpy(hash,md5s.c_str());
+
+    if (strcmp(hash,l.password)!=0) {
+	    DBG_OUTPUT_PORT.println("Received: " + md5s);
+	    DBG_OUTPUT_PORT.println("Compare to: " + String(l.password));
+        server.send(403, "text/plain", "Error 403 - Invalid username or password");         // return invalid request
+        return;
+    }
+
+    server.send(200, "text/plain", "Successful log in by " + sessID);
 }
 
 void svLogOut() {
