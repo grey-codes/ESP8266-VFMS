@@ -41,6 +41,10 @@ FS* filesystem = &LittleFS;
 #define STAPSK	"JaWBnFAmG2015"
 #endif
 
+#ifndef LOGIN_FILENAME
+#define LOGIN_FILENAME "/logins.dat"
+#endif
+
 const char* ssid = STASSID;
 const char* password = STAPSK;
 const char* host = "esp8266vfms";
@@ -53,8 +57,8 @@ void setup(void) {
 	DBG_OUTPUT_PORT.setDebugOutput(true);
 	filesystem->begin();
 
-	if (!filesystem->open("/logins.dat","r")) {
-		File f = filesystem->open("/logins.dat","w");
+	if (!filesystem->open(LOGIN_FILENAME,"r")) {
+		File f = filesystem->open(LOGIN_FILENAME,"w");
 		f.close();
 	}
 
@@ -88,6 +92,9 @@ void setup(void) {
 	DBG_OUTPUT_PORT.print(host);
 	DBG_OUTPUT_PORT.println(".local/edit to see the file browser");
 
+	server.on(LOGIN_FILENAME,[]() {
+		server.send(403, "text/plain", "You aren't allowed to see the credentials!");
+	});
 	server.on("/login",[]() {
 		svLogIn();
 	});

@@ -5,7 +5,9 @@
 #define PASSWORD_MAX_LEN 128
 #define PASSWORD_HASH_LEN 32
 
+#ifndef LOGIN_FILENAME
 #define LOGIN_FILENAME "/logins.dat"
+#endif
 
 struct logininfo {
     char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
