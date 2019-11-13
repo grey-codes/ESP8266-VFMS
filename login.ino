@@ -204,9 +204,16 @@ void svRegister() {
         server.send(406, "text/plain", "Error 406 - User already exists");         // return invalid request
         return;
     }
-\
+
     appendNewUser(username,password);
     handleFileRead("/succ.htm");
     //server.send(200, "text/plain", "Simulate register by " + sessID);
 
+}
+
+void svLoginJSON() {
+    String sessID = session_init();
+	LoginInfo linfo = get_login(sessID);
+    String res = "{\"userName\":\"" + String(linfo.username) + "\",\"userID\":"+String(linfo.userID,10)+",\"group\":"+String(linfo.group,10)+"}";
+    server.send(200, "application/json", res);
 }

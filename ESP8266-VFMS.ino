@@ -104,6 +104,9 @@ void setup(void) {
 	server.on("/register",[]() {
 		svRegister();
 	});
+	server.on("/user_info",[]() {
+		svLoginJSON();
+	});
 	server.on("/",[]() {
 		handleIndex();
 	});
