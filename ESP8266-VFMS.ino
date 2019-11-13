@@ -28,6 +28,8 @@
 #include <ESP8266mDNS.h>
 #include <FS.h>
 #include <LittleFS.h>
+#include <time.h>
+#include <string.h>
 
 //FS* filesystem = &SPIFFS;
 FS* filesystem = &LittleFS;
@@ -50,6 +52,12 @@ void setup(void) {
 	DBG_OUTPUT_PORT.print("\n");
 	DBG_OUTPUT_PORT.setDebugOutput(true);
 	filesystem->begin();
+
+	if (!filesystem->open("/logins.dat","r")) {
+		File f = filesystem->open("/logins.dat","w");
+		f.close();
+	}
+
 	{
 		Dir dir = filesystem->openDir("/");
 		while (dir.next()) {
@@ -59,7 +67,6 @@ void setup(void) {
 		}
 		DBG_OUTPUT_PORT.printf("\n");
 	}
-
 
 	//WIFI INIT
 	DBG_OUTPUT_PORT.printf("Connecting to %s\n", ssid);
