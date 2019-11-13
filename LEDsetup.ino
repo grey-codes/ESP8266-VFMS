@@ -41,17 +41,17 @@ void LEDsetup() {
 }
 
 void update_led() {
-	if (LED_Status & ID_R == ID_R) {
+	if ((LED_Status & ID_R) == ID_R) {
 		analogWrite(PIN_RED, 255);
 	} else {
 		analogWrite(PIN_RED, 0);
 	}
-	if (LED_Status & ID_G == ID_G) {
+	if ((LED_Status & ID_G) == ID_G) {
 		analogWrite(PIN_GRN, 255);
 	} else {
 		analogWrite(PIN_GRN, 0);
 	}
-	if (LED_Status & ID_B == ID_B) {
+	if ((LED_Status & ID_B) == ID_B) {
 		analogWrite(PIN_BLU, 255);
 	} else {
 		analogWrite(PIN_BLU, 0);
@@ -76,14 +76,15 @@ void svLEDSet() {
 	}
     String leds = server.arg("led");
 	char ledstat = (char)leds.toInt();
-	if (linfo.group & ID_B == ID_B) {
+	if ((linfo.group & ID_B) == ID_B) {
 		LED_Status=LED_Status^(ledstat & ID_B);
 	}
-	if (linfo.group & ID_G == ID_G) {
+	if ((linfo.group & ID_G) == ID_G) {
 		LED_Status=LED_Status^(ledstat & ID_G);
 	}
-	if (linfo.group & ID_R == ID_R) {
+	if ((linfo.group & ID_R) == ID_R) {
 		LED_Status=LED_Status^(ledstat & ID_R);
 	}
 	update_led();
+    server.send(200, "text/plain", "ok.");
 }

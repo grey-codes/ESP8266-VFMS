@@ -17,7 +17,7 @@ html {
 	}
 
 .button2 {
-	background-color: #77878A;
+	background-color: #77878A !important;
 }
 .btnhide {
 	visibility: hidden;
