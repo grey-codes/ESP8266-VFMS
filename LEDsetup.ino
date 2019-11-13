@@ -1,37 +1,89 @@
+#define PIN_RED 5
+#define PIN_GRN 4
+#define PIN_BLU 0
+
+#define ID_R 4
+#define ID_G 2
+#define ID_B 1
+
+char LED_Status;
 void LEDsetup() {
 
 	// Auxiliar variables to store the current output state
-	String output5State = "off";
-	String output4State = "off";
-	String output0State = "off";
+	LED_Status = 0;
 	
 	// Assign output variables to GPIO pins
-	const int RED = 5;
-	const int GREEN = 4;
-	const int BLUE = 0;
 	
 	// Initialize the output variables as outputs
-	pinMode(RED, OUTPUT);
-	pinMode(GREEN, OUTPUT);
-	pinMode(BLUE, OUTPUT);
+	pinMode(PIN_RED, OUTPUT);
+	pinMode(PIN_GRN, OUTPUT);
+	pinMode(PIN_BLU, OUTPUT);
 	
 	// Set output variables as outputs
-	pinMode(RED, OUTPUT);
-	pinMode(GREEN, OUTPUT);
-	pinMode(BLUE, OUTPUT);
+	pinMode(PIN_RED, OUTPUT);
+	pinMode(PIN_GRN, OUTPUT);
+	pinMode(PIN_BLU, OUTPUT);
   
 	//Set LEDs to ON state, this confirms correct initialization of the pins
-	analogWrite(RED, 255);
+	analogWrite(PIN_RED, 255);
 	delay(300);
-	analogWrite(GREEN, 255);
+	analogWrite(PIN_GRN, 255);
 	delay(300);
-	analogWrite(BLUE, 255);
+	analogWrite(PIN_BLU, 255);
 	delay(300);
 	
 	
 	// Set LEDs to OFF state
-	analogWrite(RED, 0);
-	analogWrite(GREEN, 0);
-	analogWrite(BLUE, 0);
+	analogWrite(PIN_RED, 0);
+	analogWrite(PIN_GRN, 0);
+	analogWrite(PIN_BLU, 0);
 	
+}
+
+void update_led() {
+	if (LED_Status & ID_R == ID_R) {
+		analogWrite(PIN_RED, 255);
+	} else {
+		analogWrite(PIN_RED, 0);
+	}
+	if (LED_Status & ID_G == ID_G) {
+		analogWrite(PIN_GRN, 255);
+	} else {
+		analogWrite(PIN_GRN, 0);
+	}
+	if (LED_Status & ID_B == ID_B) {
+		analogWrite(PIN_BLU, 255);
+	} else {
+		analogWrite(PIN_BLU, 0);
+	}
+}
+
+void svLEDJSON() {
+    String res = "{\"status\":\"" + String(LED_Status,10) + "\"}";
+    server.send(200, "application/json", res);
+}
+
+void svLEDSet() {
+	if (!server.hasArg("led")) {
+    	server.send(400, "text/plain", "no.");
+		return;
+	}
+	String sid = session_init();
+	LoginInfo linfo = get_login(sid);
+	if (linfo.userID==-1) { //not logged in
+    	server.send(403, "text/plain", "no.");
+		return;
+	}
+    String leds = server.arg("led");
+	char ledstat = (char)leds.toInt();
+	if (linfo.group & ID_B == ID_B) {
+		LED_Status=LED_Status^(ledstat & ID_B);
+	}
+	if (linfo.group & ID_G == ID_G) {
+		LED_Status=LED_Status^(ledstat & ID_G);
+	}
+	if (linfo.group & ID_R == ID_R) {
+		LED_Status=LED_Status^(ledstat & ID_R);
+	}
+	update_led();
 }

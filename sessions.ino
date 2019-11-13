@@ -2,34 +2,6 @@
 #define MAX_SESS 8 //8 max sessmaps
 #define SESS_EXP 60 //sessmaps may be cannibalised after 5 minutes
 
-#ifndef LOGIN_STRUCTS
-#define LOGIN_STRUCTS 1
-
-#define USERNAME_MIN_LEN 3
-#define USERNAME_MAX_LEN 32
-
-#define PASSWORD_MIN_LEN 8
-#define PASSWORD_MAX_LEN 128
-#define PASSWORD_HASH_LEN 32
-
-struct logininfo {
-  char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
-  char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
-  unsigned int userID;
-  char group;
-};
-
-typedef struct logininfo LoginInfo;
-
-struct sessmap {
-	char hash[PASSWORD_HASH_LEN+1]; // do not forget terminator !!!
-	struct logininfo userInfo;
-	time_t lastUsed;
-};
-
-typedef struct sessmap SessionMap;
-#endif
-
 SessionMap sessmaps[MAX_SESS];
 
 void copy_login(struct logininfo *dest, struct logininfo *src) {

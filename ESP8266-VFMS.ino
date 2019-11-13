@@ -45,6 +45,34 @@ FS* filesystem = &LittleFS;
 #define LOGIN_FILENAME "/logins.dat"
 #endif
 
+#ifndef LOGIN_STRUCTS
+#define LOGIN_STRUCTS 1
+
+#define USERNAME_MIN_LEN 3
+#define USERNAME_MAX_LEN 32
+
+#define PASSWORD_MIN_LEN 8
+#define PASSWORD_MAX_LEN 128
+#define PASSWORD_HASH_LEN 32
+
+struct logininfo {
+  char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
+  char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
+  unsigned int userID;
+  char group;
+};
+
+typedef struct logininfo LoginInfo;
+
+struct sessmap {
+	char hash[PASSWORD_HASH_LEN+1]; // do not forget terminator !!!
+	struct logininfo userInfo;
+	time_t lastUsed;
+};
+
+typedef struct sessmap SessionMap;
+#endif
+
 const char* ssid = STASSID;
 const char* password = STAPSK;
 const char* host = "esp8266vfms";
@@ -107,6 +135,12 @@ void setup(void) {
 	server.on("/user_info",[]() {
 		svLoginJSON();
 	});
+	server.on("/led_info",[]() {
+		svLEDJSON();
+	});
+	server.on("/led_set",[]() {
+		svLEDSet();
+	});
 	server.on("/",[]() {
 		handleIndex();
 	});
@@ -133,10 +167,10 @@ void setup(void) {
 	const char * headers[] = {"User-Agent","Cookie"} ;
 	size_t headersize = sizeof(headers)/sizeof(char*);
 	server.collectHeaders(headers, headersize );
-
 	server.begin();
+	LEDsetup();
 	DBG_OUTPUT_PORT.println("HTTP server started");
-
+	
 }
 
 void loop(void) {

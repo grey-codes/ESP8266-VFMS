@@ -2,34 +2,6 @@
 #define LOGIN_FILENAME "/logins.dat"
 #endif
 
-#ifndef LOGIN_STRUCTS
-#define LOGIN_STRUCTS 1
-
-#define USERNAME_MIN_LEN 3
-#define USERNAME_MAX_LEN 32
-
-#define PASSWORD_MIN_LEN 8
-#define PASSWORD_MAX_LEN 128
-#define PASSWORD_HASH_LEN 32
-
-struct logininfo {
-  char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
-  char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
-  unsigned int userID;
-  char group;
-};
-
-typedef struct logininfo LoginInfo;
-
-struct sessmap {
-	char hash[PASSWORD_HASH_LEN+1]; // do not forget terminator !!!
-	struct logininfo userInfo;
-	time_t lastUsed;
-};
-
-typedef struct sessmap SessionMap;
-#endif
-
 int validReq() {
     if( ! server.hasArg("username") || ! server.hasArg("password") 
         || server.arg("username") == NULL || server.arg("password") == NULL) { // no username/password?
