@@ -15,7 +15,7 @@ SessionMap sessmaps[MAX_SESS];
 void init_sessmaps() {
 	for (int i=0; i<MAX_SESS; i++) {
 		strcpy(sessmaps[i].hash,"");
-		sessmaps[i].userID = 0;
+		sessmaps[i].userID = -1;
 		sessmaps[i].lastUsed = 0;
 	}
 }
@@ -44,7 +44,7 @@ size_t find_empty_sessmap() {
 	time_t ct = time(NULL);
 	for (int i=0; i<MAX_SESS; i++) {
 		time_t lu = sessmaps[i].lastUsed;
-		if (lu == 0) {
+		if (lu == 0 || sessmaps[i].userID==-1 ) {
 			return i;
 		} else if (ct - lu > SESS_EXP) {
 			return i;
