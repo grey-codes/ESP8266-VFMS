@@ -105,7 +105,7 @@ unsigned int nextUserID() {
     return ret;
 }
 
-void appendNewUser(String username, String password) {
+void appendNewUser(String username, String password, String groupstr) {
     unsigned int id = nextUserID();
     File logins = filesystem->open(LOGIN_FILENAME,"a+");
     logins.setTimeout(10);
@@ -117,8 +117,9 @@ void appendNewUser(String username, String password) {
     String md5s = md5.toString();
     logins.println(md5s);
     logins.println(String(id,10));
+    logins.println(String(groupstr.toInt(),10));
     logins.close();
-	DBG_OUTPUT_PORT.println("Wrote new user: " + username + "\n" + md5s + "\n" + String(id,10));
+	DBG_OUTPUT_PORT.println("Wrote new user: " + username + "\n" + md5s + "\n" + String(id,10) + "\n" + groupstr);
 }
 
 void svLogIn() {
@@ -189,6 +190,7 @@ void svRegister() {
 
     String username = server.arg("username");
     String password = server.arg("password");
+    String group_str = server.arg("group");
 
     username.toLowerCase();
     username.trim();
@@ -205,7 +207,7 @@ void svRegister() {
         return;
     }
 
-    appendNewUser(username,password);
+    appendNewUser(username,password,group_str);
     handleFileRead("/succ.htm");
     //server.send(200, "text/plain", "Simulate register by " + sessID);
 
