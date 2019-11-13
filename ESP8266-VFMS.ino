@@ -104,6 +104,9 @@ void setup(void) {
 	server.on("/register",[]() {
 		svRegister();
 	});
+	server.on("/",[]() {
+		handleIndex();
+	});
 	
 	server.onNotFound([]() {
 		if (!handleFileRead(server.uri())) {

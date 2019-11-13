@@ -163,3 +163,13 @@ void handleFileList() {
 	output += "]";
 	server.send(200, "text/json", output);
 }
+
+void handleIndex() {
+	String sid = session_init();
+	LoginInfo linfo = get_login(sid);
+	if (linfo.userID==-1) { //not logged in
+		handleFileRead("/prompt.htm");
+	} else {
+		handleFileRead("/index.htm");
+	}
+}

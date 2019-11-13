@@ -1,3 +1,10 @@
+#ifndef LOGIN_FILENAME
+#define LOGIN_FILENAME "/logins.dat"
+#endif
+
+#ifndef LOGIN_STRUCTS
+#define LOGIN_STRUCTS 1
+
 #define USERNAME_MIN_LEN 3
 #define USERNAME_MAX_LEN 32
 
@@ -5,18 +12,23 @@
 #define PASSWORD_MAX_LEN 128
 #define PASSWORD_HASH_LEN 32
 
-#ifndef LOGIN_FILENAME
-#define LOGIN_FILENAME "/logins.dat"
-#endif
-
 struct logininfo {
-    char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
-	char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
-    unsigned int userID;
-    char group;
+  char username[USERNAME_MAX_LEN+1]; //+1 for null terminators aaaa
+  char password[PASSWORD_HASH_LEN+1]; //+1 for null terminators aaaa
+  unsigned int userID;
+  char group;
 };
 
 typedef struct logininfo LoginInfo;
+
+struct sessmap {
+	char hash[PASSWORD_HASH_LEN+1]; // do not forget terminator !!!
+	struct logininfo userInfo;
+	time_t lastUsed;
+};
+
+typedef struct sessmap SessionMap;
+#endif
 
 int validReq() {
     if( ! server.hasArg("username") || ! server.hasArg("password") 
@@ -143,15 +155,13 @@ void svLogIn() {
         return;
     }
 
-    map_sessmap(sessID.c_str(),l.userID);
+    map_sessmap(sessID.c_str(),l);
 
     server.sendHeader("Set-Cookie", "userID=" + String(l.userID,10));
     server.send(200, "text/plain", "Successful log in by " + sessID);
 }
 
 void svLogOut() {
-    if (!validReq())
-        return;
     String sessID = session_init();
 	DBG_OUTPUT_PORT.println("Initialize log out by " + sessID);
 
@@ -160,9 +170,10 @@ void svLogOut() {
         server.send(403, "text/plain", "Error 403 - Not logged in");         // return invalid request
         return;
     }
-
     
-    map_sessmap(sessID.c_str(),-1);
+    LoginInfo dummy;
+    dummy.userID=-1;
+    map_sessmap(sessID.c_str(),dummy);
 
     server.sendHeader("Set-Cookie", "userID=-1");
     server.send(200, "text/plain", "Simulate log out by " + sessID);
