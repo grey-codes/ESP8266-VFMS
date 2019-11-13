@@ -139,6 +139,7 @@ void svLogIn() {
 
     map_sessmap(sessID.c_str(),l.userID);
 
+    server.sendHeader("Set-Cookie", "userID=" + String(l.userID,10));
     server.send(200, "text/plain", "Successful log in by " + sessID);
 }
 
@@ -157,6 +158,7 @@ void svLogOut() {
     
     map_sessmap(sessID.c_str(),-1);
 
+    server.sendHeader("Set-Cookie", "userID=-1");
     server.send(200, "text/plain", "Simulate log out by " + sessID);
 }
 
