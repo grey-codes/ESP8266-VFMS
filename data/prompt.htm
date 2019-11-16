@@ -4,15 +4,29 @@
 		<script src="shared.js">
 		</script>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>VFMS</title>
+		<link rel="stylesheet" type="text/css" href="/style.css">
+		<title>ESP8266 Web Server</title>
 	</head>
 	<body>
-        <form action="/login">
-            Username: <input name="username" type="text"><br>
-            Password: <input name="password" type="text"><br>
-            Group: <input name="group" type="text"><br>
-            <input type="submit" value="Log in!">
-            <input type="submit" formaction="/register" value="Register!">
-        </form>
+		
+		<div class="outerContainer">
+			<div class="container">
+				<div class="header-title">
+					<h1>ESP8266 Web Server Login</h1>
+					<p>Created and Managed by CYBERGANG, 2019</p>
+				</div>
+				<div class="form">
+        
+					<form action="/login">
+					Username: <input name="username" type="text"><br>
+					Password: <input name="password" type="password"><br>
+					Group: <input name="group" type="text"><br>
+					
+					<input type="submit" value="Log in!">
+					<input type="submit" formaction="/register" value="Register!">
+					</form>
+				</div>
+			</div>
+		<div>
 	</body>
 </html>
