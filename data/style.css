@@ -44,6 +44,41 @@ p {
 	font-size: .6em;
 }
 
+.tab {
+	overflow: hidden;
+	background-color: #f1f1f1;
+
+}
+
+.tab button {
+	background-color: inherit;
+	float: center;
+  border: none;
+	color: #FFCB9A;
+	outline: none;
+	cursor: pointer;
+	padding: 1em .2em;
+	transition: .3s;
+	border-radius: .4rem;
+}
+
+.tab button:hover {
+	background-color:#FFCB9A;
+	color: #2C3531;
+	border-radius: .4rem;
+}
+
+.tab button.active {
+	background-color: #ccc;
+}
+
+.tabcontent {
+	display:none;
+	padding: 1em, 1em;
+	border-top: none;
+}
+	
+
 input[type=text], input[type=password] {
 	width: 100%
 	padding: 1.5rem 2.5rem;
@@ -63,16 +98,19 @@ input[type=submit] {
 	border-radius: 0.4rem;
 	color: #FFCB9A;
 	padding: .5rem;
+	width: 25%;
 	
 }
 
 input[type=submit]:hover {
 	background-color:#FFCB9A;
+	color: #2C3531;
 	border: .1rem solid #2C3531;
 	border-radius: 0.4rem;
-	color: #2C3531;
 	padding: .5rem;
+	width: 25%;
 }
+
 
 .button {
 	background-color: #195B6A;
