@@ -4,18 +4,30 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="shared.js"></script>
 		<script src="btnControl.js"></script>
-		<link rel="stylesheet" type="text/css" href="/style.css">
+		<link rel="stylesheet" type="text/css" href="./style.css">
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>VFMS</title>
+		<title>ESP8266 Web Server</title>
 	</head>
 	<body>
-		You are logged in.
-		<a href="/logout">Log out.</a>
+		<div class="outerContainer">
+			<div class="container">
+				<div class="header">
+					<h1>ESP8266 Web Server Home</h1>
+					<p>Created and Managed by CYBERGANG, 2019</p>
+				</div>
+			</div>
+	
+		
+		
 		
 		<button  type="button" id="redbtn" class="btnhide">RED</button>
 		<button  type="button" id="greenbtn" class="btnhide">GREEN</button>
 		<button  type="button" id="bluebtn" class="btnhide">BLUE</button>
-		
+		</div>
+		<div class="footer">
+			<p>You are logged in.</p>
+			<a href="/logout">Log out.</a>
+		</div>
 		
 		<script>updateButtons();</script>
 	</body>

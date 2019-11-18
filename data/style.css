@@ -1,24 +1,154 @@
 html {
-	font-family: Helvetica;
+	font-family: Arial;
 	display: inline-block;
 	margin: 0px auto;
 	text-align: center;
-	}
+	background-color: #2C3531;
 	
+}
+
+.outerContainer {
+	width: 70%;
+	margin: auto;
+	padding: 0.5rem;
+	border: .2rem solid #116466;
+	border-radius: .2rem;
+}
+
+.header-title {
+	border-bottom: .5rem solid #116466;
+	border-radius: .2rem;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.container div, .container form {
+	width: 100%;
+	padding: 0.2rem;
+	color: #D1E8E2;
+	background-color: #2C3531;
+}
+
+h1 {
+	color: #FFCB9A;
+	text-align: center;
+}
+
+p {
+	color: #D1E8E2;
+	font-size: .6em;
+}
+
+.tab {
+	overflow: hidden;
+	background-color: #f1f1f1;
+
+}
+
+.tab button {
+	background-color: inherit;
+	float: center;
+  border: none;
+	color: #FFCB9A;
+	outline: none;
+	cursor: pointer;
+	padding: 1em .2em;
+	transition: .3s;
+	border-radius: .4rem;
+}
+
+.tab button:hover {
+	background-color:#FFCB9A;
+	color: #2C3531;
+	border-radius: .4rem;
+}
+
+.tab button.active {
+	background-color: #ccc;
+}
+
+.tabcontent {
+	display:none;
+	padding: 1em, 1em;
+	border-top: none;
+}
+	
+
+input[type=text], input[type=password] {
+	width: 100%
+	padding: 1.5rem 2.5rem;
+	margin: 1rem 0;
+	display: inline-block;
+	border: none;
+	border-bottom: 0.2rem solid;
+	border-bottom-color: #FFCB9A;
+	box-sizing: border-box;
+	background-color: #2C3531;
+	color: #D1E8E2;
+}
+
+input[type=submit] {
+	background-color: #2C3531;
+	border: .1rem solid #FFCB9A;
+	border-radius: 0.4rem;
+	color: #FFCB9A;
+	padding: .5rem;
+	width: 25%;
+	
+}
+
+input[type=submit]:hover {
+	background-color:#FFCB9A;
+	color: #2C3531;
+	border: .1rem solid #2C3531;
+	border-radius: 0.4rem;
+	padding: .5rem;
+	width: 25%;
+}
+
+
 .button {
 	background-color: #195B6A;
 	border: none;
 	color: white;
-	padding: 16px 40px;
+	padding: .8rem;
 	text-decoration: none;
-	font-size: 30px;
-	margin: 2px;
+	font-size: 1.5em;
+	margin: .5rem;
 	cursor: pointer;
-	}
+	border-radius: .4rem;
+}
 
 .button2 {
 	background-color: #77878A !important;
+	text-color: black !important;
+	border: none !important;
+	border-radius: .4rem;
 }
 .btnhide {
 	visibility: hidden;
+}
+
+#redbtn {
+	border: 2px solid red;
+	color: red;
+	background: #f9f9f9;
+}
+
+#bluebtn {
+	border: 2px solid blue;
+	color: blue;
+	background: #f9f9f9;
+	
+}
+
+#greenbtn {
+	border: 2px solid green;
+	color: green;
+	background: #f9f9f9;
 }
