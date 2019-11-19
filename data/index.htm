@@ -4,6 +4,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="shared.js"></script>
 		<script src="btnControl.js"></script>
+		<script src="tabhandler.js"></script>
+		<script src="bigCalculator.js"></script>
 		<link rel="stylesheet" type="text/css" href="./style.css">
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>ESP8266 Web Server</title>
@@ -11,19 +13,36 @@
 	<body>
 		<div class="outerContainer">
 			<div class="container">
+				
 				<div class="header">
 					<h1>ESP8266 Web Server Home</h1>
 					<p>Created and Managed by CYBERGANG, 2019</p>
 				</div>
+				
+				<div class="tab">
+					<button class="tablinks" onclick="openForm(form, 'LED Control')">LED Control</button>
+					<button class="tablinks" onclick="openForm(form, 'Calculator')">Calculator</button>
+				</div>
+				
+				<div id = "LED Control" class="tabcontent">
+					<button  type="button" id="redbtn" class="btnhide">RED</button>
+					<button  type="button" id="greenbtn" class="btnhide">GREEN</button>
+					<button  type="button" id="bluebtn" class="btnhide">BLUE</button>
+				</div>
+				
+				<div id = "Calculator" class="tabcontent">
+					<form name="bigCalculator"  onsubmit="result()" method="post">
+						Enter the two large numbers to be multiplied:<br>
+						X: <input name="x" type="number"><br>
+						Y: <input name="y" type="number"><br>
+						<input type="submit" value="Multiply!">
+					</form>
+				</div>
 			</div>
-	
+
 		
-		
-		
-		<button  type="button" id="redbtn" class="btnhide">RED</button>
-		<button  type="button" id="greenbtn" class="btnhide">GREEN</button>
-		<button  type="button" id="bluebtn" class="btnhide">BLUE</button>
 		</div>
+		
 		<div class="footer">
 			<p>You are logged in.</p>
 			<a href="/logout">Log out.</a>
