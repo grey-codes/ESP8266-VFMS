@@ -39,9 +39,38 @@
 						<form action="/login" method="post">
 							Username: <input name="username" type="text"><br>
 							Password: <input name="password" type="password"><br>
-							Group: <input name="group" type="text"><br>
+							Group: <br>
+							R: <input id="chk_r" type="checkbox">
+							G: <input id="chk_g" type="checkbox">
+							B: <input id="chk_b" type="checkbox">
+							<br>
+							<input type="hidden" name="group" id="groupin">
 							<input type="submit" formaction="/register" value="Register">
-						</form>				
+						</form>		
+						<script>
+							function updateGroup() {
+								gruppe=0;
+								if ($("#chk_r").prop("checked")) {
+									gruppe = gruppe | 4;
+								}
+								if ($("#chk_g").prop("checked")) {
+									gruppe = gruppe | 2;
+								}
+								if ($("#chk_b").prop("checked")) {
+									gruppe = gruppe | 1;
+								}
+								$("#groupin").val(gruppe);
+							}
+							$("#chk_r").change(function(evt){
+								updateGroup();
+							});
+							$("#chk_g").change(function(evt){
+								updateGroup();
+							});
+							$("#chk_b").change(function(evt){
+								updateGroup();
+							});
+						</script>		
 					</div>
 				</div>
 			</div>

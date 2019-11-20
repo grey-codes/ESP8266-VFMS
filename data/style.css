@@ -103,6 +103,12 @@ input[type=text], input[type=password] {
 	color: #D1E8E2;
 }
 
+input[type=checkbox] {
+	margin: 2.5rem 2.5rem;
+	margin: 1rem 0;
+	display: inline-block;
+}
+
 input[type=submit] {
 	background-color: #2C3531;
 	border: .1rem solid #FFCB9A;
@@ -141,7 +147,7 @@ input[type=submit]:hover {
 	border-radius: .4rem;
 }
 .btnhide {
-	visibility: hidden;
+	display: none;
 }
 
 .hide {
