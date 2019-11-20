@@ -69,7 +69,9 @@ p {
 }
 
 .tab button.active {
-	background-color: #ccc;
+	background-color:#ffb066;
+	color: #2C3531;
+	border-radius: .4rem;
 }
 
 .tabcontent {
