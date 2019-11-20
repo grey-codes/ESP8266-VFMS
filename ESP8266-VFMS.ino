@@ -36,13 +36,12 @@ FS* filesystem = &LittleFS;
 
 #define DBG_OUTPUT_PORT Serial
 
-#ifndef STASSID
-#define STASSID "Strange Man In Your Attic"
-#define STAPSK	"JaWBnFAmG2015"
-#endif
-
 #ifndef LOGIN_FILENAME
 #define LOGIN_FILENAME "/logins.dat"
+#endif
+
+#ifndef WIFI_FILENAME
+#define WIFI_FILENAME "/wifi.dat"
 #endif
 
 #ifndef LOGIN_STRUCTS
@@ -73,8 +72,6 @@ struct sessmap {
 typedef struct sessmap SessionMap;
 #endif
 
-const char* ssid = STASSID;
-const char* password = STAPSK;
 const char* host = "esp8266vfms";
 
 ESP8266WebServer server(80);
@@ -101,7 +98,22 @@ void setup(void) {
 	}
 
 	//WIFI INIT
+
+	DBG_OUTPUT_PORT.printf("Reading wifi file %s\n", WIFI_FILENAME);
+    File wifiDat = filesystem->open(WIFI_FILENAME,"r");
+	String ssid_S, password_S;
+
+    wifiDat.setTimeout(10);
+	ssid_S = wifiDat.readStringUntil('\n');
+    password_S = wifiDat.readStringUntil('\n');
+	ssid_S.trim();
+	password_S.trim();
+	const char* ssid = ssid_S.c_str();
+	const char* password = password_S.c_str();
+	wifiDat.close();
+
 	DBG_OUTPUT_PORT.printf("Connecting to %s\n", ssid);
+
 	if (String(WiFi.SSID()) != String(ssid)) {
 		WiFi.mode(WIFI_STA);
 		WiFi.begin(ssid, password);
@@ -121,6 +133,9 @@ void setup(void) {
 	DBG_OUTPUT_PORT.println(".local/edit to see the file browser");
 
 	server.on(LOGIN_FILENAME,[]() {
+		server.send(403, "text/plain", "You aren't allowed to see the credentials!");
+	});
+	server.on(WIFI_FILENAME,[]() {
 		server.send(403, "text/plain", "You aren't allowed to see the credentials!");
 	});
 	server.on("/login",[]() {
