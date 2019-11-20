@@ -28,5 +28,4 @@ $("#calcForm").submit(function(evt){
     let inputy = Array.from($("#y").val());
     $("#calcRes").html("Result: " + multiply(inputx, inputy));
     $("#calcRes").removeClass("hide");
-    alert(multiply(inputx, inputy));
 });
