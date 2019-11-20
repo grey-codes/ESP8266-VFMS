@@ -4,7 +4,7 @@ html {
 	margin: 0px auto;
 	text-align: center;
 	background-color: #2C3531;
-	
+	color: #D1E8E2;
 }
 
 .outerContainer {
@@ -69,7 +69,9 @@ p {
 }
 
 .tab button.active {
-	background-color: #ccc;
+	background-color:#ffb066;
+	color: #2C3531;
+	border-radius: .4rem;
 }
 
 .tabcontent {
@@ -77,7 +79,6 @@ p {
 	padding: 1em, 1em;
 	border-top: none;
 }
-	
 
 input[type=text], input[type=password] {
 	width: 100%
@@ -132,6 +133,15 @@ input[type=submit]:hover {
 }
 .btnhide {
 	visibility: hidden;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+
+.calcresult {
+	font-size: 1em;
 }
 
 #redbtn {

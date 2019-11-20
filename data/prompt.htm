@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="shared.js">
-		</script>
-		<script src="tabhandler.js">
-		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="tabhandler.js"></script>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="./style.css">
 		<title>ESP8266 Web Server</title>
@@ -20,64 +18,32 @@
 				</div>
 				
 				<div class="tab">
-					<button class="tablinks" onclick="openForm(form, 'Login')">Log in</button>
-					<button class="tablinks" onclick="openForm(form, 'Register')">Register</button>
+					<button class="tablinks" id = "Login_Tab" onclick="openForm('Login')">Log in</button>
+					<button class="tablinks" id = "Register_Tab" onclick="openForm('Register')">Register</button>
 				</div>
 				
 				<div id="Login" class="tabcontent">
 					
 					<div class="form">
-				
-						<form action="/login">
-						Username: <input name="username" type="text"><br>
-						Password: <input name="password" type="password"><br>
-						<input type="submit" value="Log in">
-					</form>
-				
-					
+						<form action="/login" method="post">
+							Username: <input name="username" type="text"><br>
+							Password: <input name="password" type="password"><br>
+							<input type="submit" value="Log in">
+						</form>
 					</div>
 				</div>
 				
 				<div id="Register" class="tabcontent">
 				
 					<div class="form">
-				
-						<form action="/login">
-						Username: <input name="username" type="text"><br>
-						Password: <input name="password" type="password"><br>
-						Group: <input name="group" type="text"><br>
-						<input type="submit" formaction="/register" value="Register">
-					</form>				
-				
-					
+						<form action="/login" method="post">
+							Username: <input name="username" type="text"><br>
+							Password: <input name="password" type="password"><br>
+							Group: <input name="group" type="text"><br>
+							<input type="submit" formaction="/register" value="Register">
+						</form>				
 					</div>
 				</div>
-				
-				
-				
-				
-				
-				
-				
-				<!--
-				THESE ARE NOW SEPARATE FORMS HANDLED BY THE TABHANDLER.JS SCRIPT
-					
-				<div class="button-header">
-					<input type="submit" value="Log in">
-					<input type="submit" formaction="/register" value="Register">
-				</div>
-				
-				<div class="form">
-        
-					<form action="/login">
-					Username: <input name="username" type="text"><br>
-					Password: <input name="password" type="password"><br>
-					Group: <input name="group" type="text"><br>
-					
-
-					</form>
-				</div>
-				-->
 			</div>
 		<div>
 	</body>
