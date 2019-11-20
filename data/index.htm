@@ -31,11 +31,22 @@
 				</div>
 				
 				<div id = "Calculator" class="tabcontent">
-					<form name="bigCalculator"  onsubmit="result()" method="post">
+					<form id="calcForm" method="post">
 						Enter the two large numbers to be multiplied:<br>
-						X: <input name="x" type="number"><br>
-						Y: <input name="y" type="number"><br>
+						X: <input id="x" type="number"><br>
+						Y: <input id="y" type="number"><br>
 						<input type="submit" value="Multiply!">
+						<p class="calcresult hide" id="calcRes" ></p>
+						<script>
+							$("#calcForm").submit(function(evt){
+                        		evt.preventDefault();
+								let inputx = Array.from($("#x").val());
+								let inputy = Array.from($("#y").val());
+								$("#calcRes").html("Result: " + multiply(inputx, inputy));
+								$("#calcRes").removeClass("hide");
+								alert(multiply(inputx, inputy));
+							});
+						</script>
 					</form>
 				</div>
 			</div>
