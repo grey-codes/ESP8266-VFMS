@@ -91,7 +91,7 @@ p {
 }
 
 input[type=text], input[type=password] {
-	width: 100%
+	width: 100%;
 	padding: 1.5rem 2.5rem;
 	margin: 1rem 0;
 	display: inline-block;
@@ -137,7 +137,6 @@ input[type=submit]:hover {
 
 .button2 {
 	background-color: #77878A !important;
-	text-color: black !important;
 	border: none !important;
 	border-radius: .4rem;
 }
