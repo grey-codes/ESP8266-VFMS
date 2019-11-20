@@ -4,7 +4,7 @@ html {
 	margin: 0px auto;
 	text-align: center;
 	background-color: #2C3531;
-	
+	color: #D1E8E2;
 }
 
 .outerContainer {
@@ -133,6 +133,11 @@ input[type=submit]:hover {
 .btnhide {
 	visibility: hidden;
 }
+
+.hide {
+	visibility: hidden;
+}
+
 
 #redbtn {
 	border: 2px solid red;
