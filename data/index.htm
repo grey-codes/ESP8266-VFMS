@@ -23,9 +23,16 @@
 				</div>
 				
 				<div id = "LED_Control" class="tabcontent">
-					<button  type="button" id="redbtn" class="btnhide">RED</button>
-					<button  type="button" id="greenbtn" class="btnhide">GREEN</button>
-					<button  type="button" id="bluebtn" class="btnhide">BLUE</button>
+					<label for="rgb" id = "label_rgb" class="btnhide">RGB: </label><input type="color" value="#000000" class="btnhide" id="rgb">
+					<div class="slidecontainer">
+						<label for="slider_red" id = "label_red" class="btnhide">R: </label><input type="range" min="0" max="255" value="0" class="slider btnhide" id="slider_red">
+					</div>
+					<div class="slidecontainer">
+						<label for="slider_green" id = "label_green" class="btnhide">G: </label><input type="range" min="0" max="255" value="0" class="slider btnhide" id="slider_green">
+					</div>
+					<div class="slidecontainer">
+						<label for="slider_blue" id = "label_blue" class="btnhide">B: </label><input type="range" min="0" max="255" value="0" class="slider btnhide" id="slider_blue">
+					</div>
 				</div>
 				
 				<div id = "Calculator" class="tabcontent">
@@ -48,6 +55,6 @@
 			<a href="/logout">Log out.</a>
 		</div>
 		
-		<script>updateButtons();</script>
+		<script>updateSliders();</script>
 	</body>
 </html>

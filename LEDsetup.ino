@@ -6,6 +6,8 @@
 #define ID_G 2
 #define ID_B 1
 
+char LED_R, LED_G, LED_B;
+
 char LED_Status;
 void LEDsetup() {
 
@@ -41,30 +43,26 @@ void LEDsetup() {
 }
 
 void update_led() {
-	if ((LED_Status & ID_R) == ID_R) {
-		analogWrite(PIN_RED, 255);
-	} else {
-		analogWrite(PIN_RED, 0);
-	}
-	if ((LED_Status & ID_G) == ID_G) {
-		analogWrite(PIN_GRN, 255);
-	} else {
-		analogWrite(PIN_GRN, 0);
-	}
-	if ((LED_Status & ID_B) == ID_B) {
-		analogWrite(PIN_BLU, 255);
-	} else {
-		analogWrite(PIN_BLU, 0);
-	}
+	analogWrite(PIN_RED, LED_R);
+	analogWrite(PIN_GRN, LED_G);
+	analogWrite(PIN_BLU, LED_B);
 }
 
 void svLEDJSON() {
-    String res = "{\"status\":\"" + String(LED_Status,10) + "\"}";
+	String sid = session_init();
+	LoginInfo linfo = get_login(sid);
+	if (linfo.userID==-1) { //not logged in
+    	server.send(403, "text/plain", "no.");
+		return;
+	}
+    String res = "{\"red\":" + String(LED_R,10) + ","
+	+ "\"green\":" + String(LED_G,10) + ","
+	+ "\"blue\":" + String(LED_B,10) + "}" ;
     server.send(200, "application/json", res);
 }
 
 void svLEDSet() {
-	if (!server.hasArg("led")) {
+	if (!server.hasArg("red") && !server.hasArg("green") && !server.hasArg("blue")) {
     	server.send(400, "text/plain", "no.");
 		return;
 	}
@@ -74,16 +72,17 @@ void svLEDSet() {
     	server.send(403, "text/plain", "no.");
 		return;
 	}
-    String leds = server.arg("led");
-	char ledstat = (char)leds.toInt();
-	if ((linfo.group & ID_B) == ID_B) {
-		LED_Status=LED_Status^(ledstat & ID_B);
+	if ((linfo.group & ID_R) == ID_R && server.hasArg("red")) {
+    	String str = server.arg("red");
+		LED_R = (char)str.toInt();
 	}
-	if ((linfo.group & ID_G) == ID_G) {
-		LED_Status=LED_Status^(ledstat & ID_G);
+	if ((linfo.group & ID_G) == ID_G && server.hasArg("green")) {
+    	String str = server.arg("green");
+		LED_G = (char)str.toInt();
 	}
-	if ((linfo.group & ID_R) == ID_R) {
-		LED_Status=LED_Status^(ledstat & ID_R);
+	if ((linfo.group & ID_B) == ID_B && server.hasArg("blue")) {
+    	String str = server.arg("blue");
+		LED_B = (char)str.toInt();
 	}
 	update_led();
     server.send(200, "text/plain", "ok.");
