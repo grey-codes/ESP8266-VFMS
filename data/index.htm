@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="shared.js"></script>
 		<script src="btnControl.js"></script>
 		<script src="tabhandler.js"></script>
 		<link rel="stylesheet" type="text/css" href="./style.css">
@@ -19,8 +18,8 @@
 				</div>
 				
 				<div class="tab">
-					<button class="tablinks" onclick="openForm(form, 'LED Control')">LED Control</button>
-					<button class="tablinks" onclick="openForm(form, 'Calculator')">Calculator</button>
+					<button class="tablinks" id = "LED Control Tab" onclick="openForm('LED Control')">LED Control</button>
+					<button class="tablinks" id = "Calculator Tab" onclick="openForm('Calculator')">Calculator</button>
 				</div>
 				
 				<div id = "LED Control" class="tabcontent">

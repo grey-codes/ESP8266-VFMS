@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="shared.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="tabhandler.js"></script>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="./style.css">
@@ -18,8 +18,8 @@
 				</div>
 				
 				<div class="tab">
-					<button class="tablinks" onclick="openForm(form, 'Login')">Log in</button>
-					<button class="tablinks" onclick="openForm(form, 'Register')">Register</button>
+					<button class="tablinks" id = "Login Tab" onclick="openForm('Login')">Log in</button>
+					<button class="tablinks" id = "Register Tab" onclick="openForm('Register')">Register</button>
 				</div>
 				
 				<div id="Login" class="tabcontent">
