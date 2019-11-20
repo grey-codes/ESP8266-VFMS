@@ -5,7 +5,6 @@
 		<script src="shared.js"></script>
 		<script src="btnControl.js"></script>
 		<script src="tabhandler.js"></script>
-		<script src="bigCalculator.js"></script>
 		<link rel="stylesheet" type="text/css" href="./style.css">
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>ESP8266 Web Server</title>
@@ -37,19 +36,10 @@
 						Y: <input id="y" type="number"><br>
 						<input type="submit" value="Multiply!">
 						<p class="calcresult hide" id="calcRes" ></p>
-						<script>
-							$("#calcForm").submit(function(evt){
-                        		evt.preventDefault();
-								let inputx = Array.from($("#x").val());
-								let inputy = Array.from($("#y").val());
-								$("#calcRes").html("Result: " + multiply(inputx, inputy));
-								$("#calcRes").removeClass("hide");
-								alert(multiply(inputx, inputy));
-							});
-						</script>
 					</form>
 				</div>
 			</div>
+			<script src="bigCalculator.js"></script>
 
 		
 		</div>

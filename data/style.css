@@ -139,6 +139,10 @@ input[type=submit]:hover {
 }
 
 
+.calcresult {
+	font-size: 1em;
+}
+
 #redbtn {
 	border: 2px solid red;
 	color: red;

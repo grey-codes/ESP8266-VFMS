@@ -1,11 +1,3 @@
-function result() {
-		let calcForm = document.forms["bigCalculator"];
-        let inputx = calcForm.elements["x"];
-		let inputy = calcForm.elements["y"];
-
-      	window.alert(multiply(inputx, inputy));
-
-}
 function multiply(x, y) {
 
     const res = Array(x.length+y.length).fill(0);
@@ -29,3 +21,12 @@ function multiply(x, y) {
 
     return res.join("").replace(/^0*(\d)/, "$1");
 }
+
+$("#calcForm").submit(function(evt){
+    evt.preventDefault();
+    let inputx = Array.from($("#x").val());
+    let inputy = Array.from($("#y").val());
+    $("#calcRes").html("Result: " + multiply(inputx, inputy));
+    $("#calcRes").removeClass("hide");
+    alert(multiply(inputx, inputy));
+});
